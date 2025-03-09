@@ -18,5 +18,4 @@ export class InitMigration1741482279931 implements MigrationInterface {
         await queryRunner.query(`DROP INDEX \`IDX_95ff138b88fdd8a7c9ebdb97a3\` ON \`status\``);
         await queryRunner.query(`DROP TABLE \`status\``);
     }
-
 }

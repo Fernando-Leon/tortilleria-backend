@@ -1,4 +1,5 @@
 import { Status } from "../../catalogs/status/status.entity";
+import { Role } from "../../catalogs/roles/role.entity";
 import {
   Column,
   Entity,
@@ -17,8 +18,8 @@ export class User {
   @Column({ type: 'varchar', length: 70, nullable: true })
   password: string;
 
-  @Column({ default: 'administrador' })
-  role: string
+  @ManyToOne(() => Role, (role) => role.users)
+  role: Role;
 
   @ManyToOne(() => Status, (status) => status.users)
   status: Status;

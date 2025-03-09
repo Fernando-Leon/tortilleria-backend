@@ -11,9 +11,8 @@ export class RegisterDto {
   @Transform(({ value }) => value.trim())
   password: string;
 
-  @IsString()
-  @MinLength(1)
-  role: string;
+  @IsNumber()
+  roleId: number;
 
   @IsNumber()
   statusId: number;

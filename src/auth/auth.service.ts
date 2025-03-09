@@ -16,7 +16,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register({ name, password, role, statusId  }: RegisterDto) {
+  async register({ name, password, roleId, statusId  }: RegisterDto) {
     const user = await this.usersService.findOneByName(name);
 
     if (user) {
@@ -28,7 +28,7 @@ export class AuthService {
     await this.usersService.create({
       name,
       password: hashedPassword,
-      role,
+      roleId,
       statusId,
     });
 
@@ -41,7 +41,7 @@ export class AuthService {
     const user = await this.usersService.findOneByName(name);
 
     if (!user) {
-      throw new UnauthorizedException("Invalid email");
+      throw new UnauthorizedException("Invalid name");
     }
 
     const isPasswordValid = await bcryptjs.compare(password, user.password);
