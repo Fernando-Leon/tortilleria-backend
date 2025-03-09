@@ -1,5 +1,7 @@
 import { DataSource, DataSourceOptions } from "typeorm";
+import * as dotenv from 'dotenv';
 
+/*
 export const dataSourceOptions: DataSourceOptions = {
   type: 'mysql',
   host: 'mysqlprod.mysql.database.azure.com',
@@ -7,10 +9,34 @@ export const dataSourceOptions: DataSourceOptions = {
   username: 'ferleon',
   password: 'rootP@12',
   database: 'database_tortilleria',
-  entities: ['dist/**/*.entity{.ts,.js}'],
-  migrations: ['dist/db/migrations/*{.ts,.js}'],
   //synchronize: true,
 }
+*/
+
+/*
+export const dataSourceOptions: DataSourceOptions = {
+  type: 'mysql',
+  host: 'localhost',
+  port: 3306,
+  username: 'root',
+  password: 'root',
+  database: 'database_tortilleria',
+}
+
+*/
+
+dotenv.config();
+
+export const dataSourceOptions: DataSourceOptions = {
+  type: 'mysql',
+  host: process.env.DB_HOST,
+  port: 3306,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  entities: ['dist/**/*.entity{.ts,.js}'],
+  migrations: ['dist/db/migrations/*{.ts,.js}'],
+};
 
 /**
  * 

@@ -1,24 +1,25 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Sex } from "../../catalogs/sex/sex.entity";
+import { Status } from "../../catalogs/status/status.entity";
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
-@Entity("users")
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true, nullable: false, type: 'varchar', length: 30 })
   name: string;
 
-  @Column()
-  lastname: string;
+  @Column({ type: 'varchar', length: 70, nullable: true })
+  password: string;
 
-  @Column()
-  mail: string;
+  @Column({ default: 'administrador' })
+  role: string
 
-  @ManyToOne(() => Sex, (sex) => sex.users)
-  @JoinColumn({ name: "sexId" })
-  sex: Sex;
-
-  @Column()
-  sexId: number;
+  @ManyToOne(() => Status, (status) => status.users)
+  status: Status;
 }

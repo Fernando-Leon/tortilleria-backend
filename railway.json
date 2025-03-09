@@ -1,0 +1,4 @@
+{
+  "build": "npm install && npm run build",
+  "start": "npm run migration:run && npm start"
+}
