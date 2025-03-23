@@ -1,4 +1,4 @@
-export class CreateFeatureDto {
+export class CreateProviderDto {
   name: string;
   description: string;
 }

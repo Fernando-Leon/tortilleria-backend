@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateFeatureDto } from './dto/create-feature.dto';
 import { UpdateFeatureDto } from './dto/update-feature.dto';
+import { Feature } from './entities/feature.entity';
 
 @Injectable()
 export class FeatureService {
+  constructor(@InjectRepository(Feature) private featureRepository: Repository<Feature>) {}
+
   create(createFeatureDto: CreateFeatureDto) {
-    return 'This action adds a new feature';
+    return this.featureRepository.save(createFeatureDto);
   }
 
   findAll() {
-    return `This action returns all feature`;
+    return this.featureRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} feature`;
+    return this.featureRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateFeatureDto: UpdateFeatureDto) {
-    return `This action updates a #${id} feature`;
+    return this.featureRepository.update(id, updateFeatureDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} feature`;
+    return this.featureRepository.delete(id);
   }
 }
