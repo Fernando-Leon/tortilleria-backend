@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { User } from "../../users/entities/user.entity"
+import { Permission } from "../../permission/entities/permission.entity"
 
 @Entity('profile')
 export class Profile {
@@ -14,4 +15,7 @@ export class Profile {
 
   @OneToMany(() => User, (user) => user.profile)
   users: User[];
+
+  @OneToMany(() => Permission, (permission) => permission.profile)
+  permissions: Permission[];
 }
