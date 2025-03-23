@@ -12,7 +12,7 @@ export class RegisterDto {
   password: string;
 
   @IsNumber()
-  roleId: number;
+  profileId: number;
 
   @IsNumber()
   statusId: number;

@@ -29,10 +29,10 @@ dotenv.config();
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'mysql',
-  host: 'mysqlprod.mysql.database.azure.com',
+  host: 'localhost',
   port: 3306,
-  username: 'ferleon',
-  password: 'rootP@12',
+  username: 'root',
+  password: 'root',
   database: 'database_tortilleria',
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/db/migrations/*{.ts,.js}'],

@@ -5,7 +5,7 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { User } from "./entities/user.entity";
 import { Status } from "src/catalogs/status/status.entity";
-import { Role } from "src/catalogs/roles/role.entity";
+import { Profile } from "src/profile/entities/profile.entity";
 
 @Injectable()
 export class UsersService {
@@ -14,26 +14,26 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
     @InjectRepository(Status)
     private readonly statusRepository: Repository<Status>,
-    @InjectRepository(Role)
-    private readonly roleRepository: Repository<Role>,
+    @InjectRepository(Profile)
+    private readonly profileRepository: Repository<Profile>,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const { roleId, statusId, ...userData } = createUserDto;
-    const role = await this.roleRepository.findOneBy({ id: roleId });
+    const { profileId, statusId, ...userData } = createUserDto;
+    const profile = await this.profileRepository.findOneBy({ id: profileId });
     const status = await this.statusRepository.findOneBy({ id: statusId });
 
     if (!status) {
       throw new Error('Status not found');
     }
 
-    if (!role) {
-      throw new Error('Role not found');
+    if (!profile) {
+      throw new Error('Profile not found');
     }
 
     const user = this.usersRepository.create({
       ...userData,
-      role,
+      profile,
       status,
     });
 
@@ -48,43 +48,43 @@ export class UsersService {
     return await this.usersRepository.findOne({ 
       where: { id },
       select: ["id", "name"],
-      relations: ["role", "status"],
+      relations: ["profile", "status"],
      });
   }
 
   findAll() {
     return this.usersRepository.find({ 
       select: ["id", "name"],
-      relations: ["role", "status"],
+      relations: ["profile", "status"],
     });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const { roleId, statusId, ...userData } = updateUserDto;
+    const { profileId, statusId, ...userData } = updateUserDto;
   
     let status;
-    let role;
-    if (statusId && roleId) {
+    let profile;
+    if (statusId && profileId) {
       status = await this.statusRepository.findOneBy({ id: statusId });
-      role = await this.roleRepository.findOneBy({ id: roleId });
+      profile = await this.profileRepository.findOneBy({ id: profileId });
       if (!status) {
         throw new Error('Status not found');
       }
-      if (!role) {
-        throw new Error('Role not found');
+      if (!profile) {
+        throw new Error('Profile not found');
       }
     }
   
     const updatedUserData = {
       ...userData,
-      ...(role && { role }),
+      ...(profile && { profile }),
       ...(status && { status }),
     };
   
     await this.usersRepository.update(id, updatedUserData);
     const user = await this.usersRepository.findOne({
       where: { id },
-      relations: ['role', 'status'],
+      relations: ['profile', 'status'],
     });
   
     if (!user) {

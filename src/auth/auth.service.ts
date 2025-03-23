@@ -16,7 +16,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register({ name, password, roleId, statusId  }: RegisterDto) {
+  async register({ name, password, profileId, statusId }: RegisterDto) {
     const user = await this.usersService.findOneByName(name);
 
     if (user) {
@@ -28,7 +28,7 @@ export class AuthService {
     await this.usersService.create({
       name,
       password: hashedPassword,
-      roleId,
+      profileId,
       statusId,
     });
 

@@ -1,6 +1,6 @@
 export class CreateUserDto {
   name: string;
   password: string;
-  roleId: number;
+  profileId: number;
   statusId: number;
 }
