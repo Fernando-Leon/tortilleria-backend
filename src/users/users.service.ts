@@ -41,7 +41,10 @@ export class UsersService {
   }
 
   async findOneByName(name: string) {
-    return await this.usersRepository.findOneBy({ name });
+    return await this.usersRepository.findOne({
+      where: { name },
+      relations: ["profile"],
+    });
   }
 
   async findById(id: number) {

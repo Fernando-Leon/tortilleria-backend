@@ -10,7 +10,7 @@ export class Permission {
   @ManyToOne(() => Profile, (profile) => profile.permissions)
   profile: Profile;
 
-  @ManyToOne(() => Feature, (feature) => feature.permissions)
+  @ManyToOne(() => Feature, (feature) => feature.permissions, { onDelete: 'CASCADE' })
   feature: Feature;
 
   @Column({ type: 'boolean' })

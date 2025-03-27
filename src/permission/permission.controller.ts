@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PermissionService } from './permission.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { UpdatePermissionBooleansDto } from './dto/update-permission-boolean.dto';
 
 @Controller('permission')
 export class PermissionController {
@@ -30,5 +31,15 @@ export class PermissionController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.permissionService.remove(+id);
+  }
+
+  @Get('profile/:profileId')
+  findAllPermissionsByProfileId(@Param('profileId') profileId: string) {
+    return this.permissionService.findAllPermissionsByProfileId(+profileId);
+  }
+
+  @Patch('/booleans/:id')
+  updateBooleans(@Param('id') id: string, @Body() updatePermissionBooleansDto: UpdatePermissionBooleansDto) {
+    return this.permissionService.updateBooleans(+id, updatePermissionBooleansDto);
   }
 }
