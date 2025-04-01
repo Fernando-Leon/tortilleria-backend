@@ -10,6 +10,16 @@ import { UsersService } from "src/users/users.service";
 import { LoginDto } from "./dto/login.dto";
 import { PermissionService } from "src/permission/permission.service";
 
+export interface TransformedPermission {
+  id: number;
+  canCreate: boolean;
+  canRead: boolean;
+  canUpdate: boolean;
+  canDelete: boolean;
+  name: string;
+  route: string;
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -60,15 +70,32 @@ export class AuthService {
 
     return {
       token: token, 
+      userId: user.id,
       name: user.name,
-      permissions: permissions.map(permission => ({
-        id: permission.id,
-        canRead: permission.canRead,
-        canCreate: permission.canCreate,
-        canUpdate: permission.canUpdate,
-        canDelete: permission.canDelete,
-        featureName: permission.feature.name,
-      })),
+    };
+  }
+
+  async getPermissionsByUserId(userId: number): Promise<{ permissions: TransformedPermission[] }> {
+    const user = await this.usersService.findById(userId);
+  
+    if (!user) {
+      throw new UnauthorizedException("Invalid user");
+    }
+  
+    const permissions = await this.permissionService.findAllByProfileIdAuth(user.profile.id);
+  
+    const transformedPermissions: TransformedPermission[] = permissions.map(permission => ({
+      id: permission.id,
+      canCreate: permission.canCreate,
+      canRead: permission.canRead,
+      canUpdate: permission.canUpdate,
+      canDelete: permission.canDelete,
+      name: permission.feature.name,
+      route: permission.feature.route,
+    }));
+  
+    return {
+      permissions: transformedPermissions,
     };
   }
 }

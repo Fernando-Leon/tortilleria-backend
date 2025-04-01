@@ -12,6 +12,9 @@ export class Feature {
   @Column({ type: 'varchar', length: 100 })
   description: string;
 
+  @Column({ type: 'varchar', length: 100, unique: true })
+  route: string;
+
   @OneToMany(() => Permission, (permission) => permission.feature)
   permissions: Permission[];
 }

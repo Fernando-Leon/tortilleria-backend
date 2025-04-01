@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from "@nestjs/common";
 import { LoginDto } from "./dto/login.dto";
 import { RegisterDto } from "./dto/register.dto";
 import { AuthService } from "./auth.service";
@@ -17,6 +17,12 @@ export class AuthController {
   @Post("login")
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
+  }
+
+  @Get("permissions/:id")
+  async getPermissions(@Param("id") id: string) {
+    const { permissions } = await this.authService.getPermissionsByUserId(+id);
+    return permissions;
   }
 
   @Get("test")
