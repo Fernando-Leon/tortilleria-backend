@@ -15,6 +15,8 @@ export class Initial1743084842583 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE \`permission\` ADD CONSTRAINT \`FK_08794a7516dbd94b7065408e879\` FOREIGN KEY (\`profileId\`) REFERENCES \`profile\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE \`permission\` ADD CONSTRAINT \`FK_d5660ed7086e3991e4a292275e8\` FOREIGN KEY (\`featureId\`) REFERENCES \`feature\`(\`id\`) ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`INSERT INTO \`status\` (\`name\`, \`description\`) VALUES ('Activo', 'Activo'), ('Inactivo', 'Inactivo')`);
+        await queryRunner.query(`INSERT INTO \`profile\` (\`name\`, \`description\`) VALUES ('Administrador', 'Perfil con todos los permisos')`);
+        await queryRunner.query(`INSERT INTO \`users\` (\`name\`, \`password\`, \`profileId\`, \`statusId\`) VALUES ('Administrador', 'admin', (SELECT \`id\` FROM \`profile\` WHERE \`name\` = 'Administrador'), (SELECT \`id\` FROM \`status\` WHERE \`name\` = 'Activo'))`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
